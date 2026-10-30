@@ -8,15 +8,14 @@
 import os
 import pandas as pd
 
-# Кестенің барлық бағандары экранға толық сыюы үшін баптау:
 pd.set_option("display.max_columns", None)
 pd.set_option("display.width", 1000)
 
-# CSV файлдың жолын автоматты түрде табу (кез келген папкадан іске қосылады):
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CSV_PATH = os.path.join(BASE_DIR, "marketing_data.csv")
+CSV_PATH = os.path.join(BASE_DIR, "students_data.csv")
 
 myData = pd.read_csv(CSV_PATH)
+num_cols = ["Курс", "Қатысу_пайызы", "Аралық_бақылау", "Емтихан_балы", "GPA", "Стипендия"]
 
 print("=" * 80)
 print('15. Деректерді бір немесе бірнеше баған бойынша сұрыптаңыз.')
@@ -24,13 +23,10 @@ print("Pandas әдістері:", 'sort_values()')
 print("=" * 80 + "\n")
 
 # --- НЕГІЗГІ КОД ---
-sortedData1 = myData.sort_values("Пайда", ascending=False)
-print(sortedData1[["Күні", "Өнім атауы", "Қала", "Пайда"]].head(5))
-
-sortedData2 = myData.sort_values(by=["Қала", "Пайда"], ascending=[True, False])
-print(sortedData2[["№", "Күні", "Қала", "Өнім атауы", "Жарнама түрі", "Сатылым көлемі", "Пайда"]].head(10))
+sorted_data = myData.sort_values(by=["Факультет", "GPA"], ascending=[True, False])
+print(sorted_data[["Студент_ID", "Аты_жөні", "Факультет", "Мамандық", "Курс", "Емтихан_балы", "GPA", "Стипендия"]].head(10))
 
 print("\n" + "-" * 80)
 print("Түсіндірме:")
-print("• sort_values() әдісі кесте жолдарын бір немесе бірнеше баған бойынша өсу (ascending=True) немесе кему (ascending=False) ретімен сұрыптайды.\nCSV бойынша талдау: Кесте алдымен 'Қала' бағаны бойынша әліпби ретімен (Алматы бірінші), ал әр қаланың ішінде 'Пайда' бағаны бойынша кему ретімен сұрыпталды. Алматы қаласы бойынша ең жоғары пайда — 218 бірлік (Телефон сатылымы).")
+print("• sort_values(by=['Факультет', 'GPA'], ascending=[True, False]) — кестені бірнеше баған бойынша сұрыптайды: алдымен 'Факультет' атауын әліпби ретімен (ascending=True: Ақпараттық технологиялар бірінші), ал әр факультет ішінде 'GPA' балын кему ретімен (ascending=False: ең үздігінен бастап) реттейді.\nCSV бойынша талдау: Нәтижеде Ақпараттық технологиялар факультетінің ең үздік студенттері тізім басына шықты (ең жоғары GPA = 3.90).")
 print("-" * 80)
